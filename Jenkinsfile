@@ -49,12 +49,13 @@ true).trim()
 }
 }
 }
-}
-stage('Ansible Deploy') {
+}stage('Ansible Deploy') {
     steps {
+        sh "echo 'APP_SERVER_IP is: ${APP_SERVER_IP}'"
         sh """
             printf '[appserver]\\n${APP_SERVER_IP} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/jenkins-key.pem\\n' > ansible/inventory
         """
+        sh "cat ansible/inventory"
         sh """
             ansible-playbook ansible/playbook.yml \
                 -i ansible/inventory \
@@ -63,6 +64,7 @@ stage('Ansible Deploy') {
         """
     }
 }
+
 }
 post {
 success { echo 'Pipeline succeeded! App is live.' }
