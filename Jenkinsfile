@@ -49,7 +49,7 @@ true).trim()
 }
 }
 }
-}stage('Ansible Deploy') {
+stage('Ansible Deploy') {
     steps {
         sh "echo 'APP_SERVER_IP is: ${APP_SERVER_IP}'"
         sh """
