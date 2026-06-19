@@ -68,7 +68,7 @@ pipeline {
                 """
                 sh "cat ansible/inventory"
                 sh """
-                    ansible-playbook ansible/playbook.yml \
+                    ANSIBLE_HOST_KEY_CHECKING=Falseansible-playbook ansible/playbook.yml \
                         -i ansible/inventory \
                         -e dockerhub_user=${DOCKERHUB_USER} \
                         -e image_tag=${BUILD_NUMBER}
