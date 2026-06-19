@@ -18,11 +18,14 @@ sh 'mvn clean package -DskipTests'
 }
 }
 stage('SonarQube Analysis') {
-steps {
-withSonarQubeEnv('sonarqube') {
-sh 'mvn sonar:sonar'
-}
-}
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh '''mvn sonar:sonar \
+                -Dsonar.projectKey=Kalash0098_spring-petclinic \
+                -Dsonar.organization=kalash0098 \
+                -Dsonar.host.url=https://sonarcloud.io'''
+        }
+    }
 }
 stage('Docker Build & Push') {
 steps {
