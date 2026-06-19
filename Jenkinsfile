@@ -51,16 +51,17 @@ true).trim()
 }
 }
 stage('Ansible Deploy') {
-steps {
-sh """
-echo '[appserver]' > ansible/inventory
-echo '${APP_SERVER_IP} ansible_user=ubuntu
-ansible_ssh_private_key_file=~/.ssh/jenkins-key.pem' >> ansible/inventory
-"""
-sh """
-ansible-playbook ansible/playbook.yml \\-i ansible/inventory \\-e dockerhub_user=${DOCKERHUB_USER} \\-e image_tag=${BUILD_NUMBER}
-"""
-}
+    steps {
+        sh """
+            printf '[appserver]\\n${APP_SERVER_IP} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/jenkins-key.pem\\n' > ansible/inventory
+        """
+        sh """
+            ansible-playbook ansible/playbook.yml \
+                -i ansible/inventory \
+                -e dockerhub_user=${DOCKERHUB_USER} \
+                -e image_tag=${BUILD_NUMBER}
+        """
+    }
 }
 }
 post {
