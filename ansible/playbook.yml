@@ -1,0 +1,33 @@
+---
+- name: Deploy Petclinic Application
+  hosts: appserver
+  become: yes
+  vars:
+    docker_image: '{{ dockerhub_user }}/petclinic:{{ image_tag }}'
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: '{{ docker_image }}'
+        source: pull
+
+    - name: Run Petclinic container
+      community.docker.docker_container:
+        name: petclinic
+        image: '{{ docker_image }}'
+        state: started
+        restart_policy: always
+        ports:
+          - '8080:8080'
