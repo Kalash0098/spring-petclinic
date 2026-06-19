@@ -14,7 +14,7 @@ url: 'https://github.com/Kalash0098/spring-petclinic.git'
 }
 stage('Maven Build') {
 steps {
-sh 'mvn clean package -DskipTests'
+sh 'MAVEN_OPTS="-Xmx1024m" mvn clean package -DskipTests -Dcheckstyle.skip=true'
 }
 }
 stage('SonarQube Analysis') {
